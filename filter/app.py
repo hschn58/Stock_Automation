@@ -4,7 +4,6 @@ import base64
 import pandas as pd
 from flask import Flask, request, render_template_string, send_file, session, redirect, url_for
 import matplotlib
-matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import os
@@ -24,47 +23,15 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineProfile
 from PyQt5.QtCore import QUrl
 
-from template import template
 
 
 app = Flask(__name__)
 
-app.secret_key='%!S()@#N!)$MELAN)0aP@NDNOQDNA:AQ)!>~/)FKPWKF:"A}RK_CKP:EKQO{CJC QORCNPHDSQKLD:AP%+_"A}|AHDJKAHJFSKLHFJKLASFHDJAPOIH!~)_(~!_(<A:S))'
-# cahnge buttons to reflect input, ensure pie colors are consistent
-#portfolios, acc numbers, needing input of optional second filter
-# order by class 2 only if use_second_filter is True
-
-#excel not perf
-#if neither is common stock, it wont filter (or only 1 filter)
-#portfolios, acc numbers
-#municipal bonds < 100 doesn't return all accounts
-#ensure that both prior pie charts are deleted after each new request
-#cookie warning when displaying charts
-
+app.secret_key='YOUR_SECRET_KEY'
 
 
 from flask_cors import CORS
 CORS(app)
-
-# def get_data_file_path(filename='Client_Portfolio_Data.csv'):
-#     # If we're running in a PyInstaller bundle
-#     if getattr(sys, 'frozen', False):
-#         # The executable is here:
-#         base_path = sys._MEIPASS  # if you had embedded data
-#         # But if you want to store the CSV right next to the exe,
-#         # you could do:
-#         base_path = os.path.dirname(sys.executable)
-#     else:
-#         # Running in normal Python
-#         base_path = os.path.dirname(os.path.abspath(__file__))
-
-#     return os.path.join(base_path, filename)
-
-# csv_path = get_data_file_path()
-
-# # Load your data
-# data = pd.read_csv(csv_path)
-
 
 def search_pattern(strings, pattern):
     """
@@ -98,10 +65,12 @@ def search_pattern(strings, pattern):
 
 DATA_FILENAME = "Client_portfolio_data.csv"
 CSV_PATH = None  # global that gets set once the file is confirmed
-data = None      # maybe store a global DataFrame
-# --- Build cache lists ---
+data = None     
+
 
 # ------------- HTML TEMPLATE -------------
+
+from template import template
 
 
 # ------------- PYTHON HELPER FUNCTIONS -------------
@@ -224,6 +193,8 @@ def convert_to_percent(data_list):
     total = sum(data_list)
     return [round((val / total) * 100.0, 2) for val in data_list]
 
+#anti-aliasing figure renderer
+matplotlib.use('Agg')
 
 def generate_pie_chart(portfolio, shortName=None, threshold=3):
     """Generate a pie chart of Class breakdown for a portfolio (and optional shortName)."""
