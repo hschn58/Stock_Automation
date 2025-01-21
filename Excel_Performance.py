@@ -91,8 +91,8 @@ while True:
 
     #assign label here so that the label has been assigned before chart pops up 
 
-    #label = input('Please enter the name for this group code:')
-    #label = labelcheck(label)
+    label = input('Please enter the name for this group code:')
+    label = labelcheck(label)
 
 
     #plot
