@@ -3,7 +3,7 @@ template = r"""
 <!doctype html>
 <html>
   <head>
-    <title>SCM Advent Filter (Multi-Filter + Sorting)</title>
+    <title>Client Portfolio Filter (Multi-Filter + Sorting)</title>
     <style>
       .container { display: flex; }
       .left-panel { width: 60%; margin-right: 20px; }
@@ -22,7 +22,7 @@ template = r"""
     <!-- MAIN FILTER FORM -->
     <form method="POST">
       <input type="hidden" name="action" value="filter">
-      <h3>SCM Advent Filter</h3>
+      <h3>Client Portfolio Filter</h3>
 
       <!-- First Filter -->
       <label for="classFilter1">Class #1:</label>
