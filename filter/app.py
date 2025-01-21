@@ -27,7 +27,7 @@ from PyQt5.QtCore import QUrl
 
 app = Flask(__name__)
 
-app.secret_key='YOUR_SECRET_KEY'
+app.secret_key='SECRET_KEY'
 
 
 from flask_cors import CORS
