@@ -26,7 +26,7 @@ from PyQt5.QtCore import QUrl
 
 app = Flask(__name__)
 
-app.secret_key='%!S()@#N!)$MELAN)0aP@NDNOQDNA:AQ)!>~/)FKPWKF:"A}RK_CKP:EKQO{CJC QORCNPHDSQKLD:AP%+_"A}|AHDJKAHJFSKLHFJKLASFHDJAPOIH!~)_(~!_(<A:S))'
+app.secret_key='secret_key'
 # cahnge buttons to reflect input, ensure pie colors are consistent
 #portfolios, acc numbers, needing input of optional second filter
 # order by class 2 only if use_second_filter is True
