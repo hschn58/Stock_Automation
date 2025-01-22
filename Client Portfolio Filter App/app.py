@@ -27,18 +27,6 @@ from PyQt5.QtCore import QUrl
 app = Flask(__name__)
 
 app.secret_key='secret_key'
-# cahnge buttons to reflect input, ensure pie colors are consistent
-#portfolios, acc numbers, needing input of optional second filter
-# order by class 2 only if use_second_filter is True
-
-#excel not perf
-#if neither is common stock, it wont filter (or only 1 filter)
-#portfolios, acc numbers
-#municipal bonds < 100 doesn't return all accounts
-#ensure that both prior pie charts are deleted after each new request
-#cookie warning when displaying charts
-
-
 
 from flask_cors import CORS
 CORS(app)
