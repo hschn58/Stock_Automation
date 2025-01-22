@@ -4,7 +4,6 @@ import base64
 import pandas as pd
 from flask import Flask, request, render_template_string, send_file, session, redirect, url_for
 import matplotlib
-matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import os
@@ -44,7 +43,7 @@ app.secret_key='%!S()@#N!)$MELAN)0aP@NDNOQDNA:AQ)!>~/)FKPWKF:"A}RK_CKP:EKQO{CJC 
 from flask_cors import CORS
 CORS(app)
 
-# def get_data_file_path(filename='Advent_Data.csv'):
+# def get_data_file_path(filename='Client_Data.csv'):
 #     # If we're running in a PyInstaller bundle
 #     if getattr(sys, 'frozen', False):
 #         # The executable is here:
@@ -94,7 +93,7 @@ def search_pattern(strings, pattern):
 
 # --- Columns ---
 
-DATA_FILENAME = "Advent_Data.csv"
+DATA_FILENAME = "Client_Data.csv"
 CSV_PATH = None  # global that gets set once the file is confirmed
 data = None      # maybe store a global DataFrame
 # --- Build cache lists ---
@@ -104,7 +103,7 @@ template = r"""
 <!doctype html>
 <html>
   <head>
-    <title>SCM Advent Filter (Multi-Filter + Sorting)</title>
+    <title>Client Portfolio Filter (Multi-Filter + Sorting)</title>
     <style>
       .container { display: flex; }
       .left-panel { width: 60%; margin-right: 20px; }
@@ -123,7 +122,7 @@ template = r"""
     <!-- MAIN FILTER FORM -->
     <form method="POST">
       <input type="hidden" name="action" value="filter">
-      <h3>SCM Advent Filter</h3>
+      <h3>Client Portfolio Filter</h3>
 
       <!-- First Filter -->
       <label for="classFilter1">Class #1:</label>
@@ -641,6 +640,9 @@ def convert_to_percent(data_list):
     total = sum(data_list)
     return [round((val / total) * 100.0, 2) for val in data_list]
 
+
+#anti-aliasing figure renderer
+matplotlib.use('Agg')
 
 def generate_pie_chart(portfolio, shortName=None, threshold=3):
     """Generate a pie chart of Class breakdown for a portfolio (and optional shortName)."""
@@ -1495,7 +1497,7 @@ class MainWindow(QMainWindow):
         msg.setStandardButtons(QMessageBox.Ok)
         msg.exec_()
 
-    def get_data_file_path(self, filename='Advent_Data.csv'):
+    def get_data_file_path(self, filename='Client_Data.csv'):
         # If we're running in a PyInstaller bundle
         if getattr(sys, 'frozen', False):
             # The executable is here:
