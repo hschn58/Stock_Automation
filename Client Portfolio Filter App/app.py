@@ -182,7 +182,7 @@ def filter_single(df, class_filter, operator_, target_str):
                 pass_list.append(port)
 
     pass_set = set(pass_list)
-    return df[df[COL_PORTFOLIO].isin(pass_set)] #add sum here and concatenate somehow?
+    return df[df[COL_PORTFOLIO].isin(pass_set)] 
 
 
 def apply_both_filters(class1, op1, pct1, class2, op2, pct2, use_second, df):
@@ -365,7 +365,6 @@ def index():
 
     if data is None:
         "<h1>Data is missing or wasn't loaded!</h1>"
-        time.sleep(5)
         sys.exit(1)
         
 # else proceed
@@ -387,7 +386,7 @@ def index():
 
     cached_classes = data[COL_CLASS].dropna().unique().tolist()
 
-    # Suppose you only want segments that are NOT in your class list
+    # Suppose segments that are not in class list is what is wanted
     cached_segments = [
         seg for seg in data[COL_SEGMENT].dropna().unique().tolist()
         if seg not in cached_classes
@@ -450,7 +449,6 @@ def index():
         # Gather sector filter
 
         last_sort = request.form.get('last_sort', 'portfolio')
-
 
         if action in ('filter', 'sort_class1', 'sort_class2', 'sort_sector', 'sort_cash', 'view_chart', 'download_excel'):
             
@@ -706,6 +704,8 @@ def index():
 
 @app.route('/download')
 def download(classFilter1="", operator1="lt", targetPercent1="", use_second_filter=False, classFilter2="", operator2="lt", targetPercent2="", selected_sector='(none)', operator_sector="lt", targetPercentSector="", sector=False ):
+
+    #have to re-build the dataset for download because it is too large to be stored in session
     
     export_data = []
 
@@ -1013,6 +1013,7 @@ def download(classFilter1="", operator1="lt", targetPercent1="", use_second_filt
             mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         )
 
+#add flag --noconsole when building the app with pyinstaller to avoid altogether
 @app.route('/favicon.ico')
 def favicon():
     return "", 204
