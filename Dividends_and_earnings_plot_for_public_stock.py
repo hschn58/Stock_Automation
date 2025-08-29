@@ -1,4 +1,4 @@
-#plot company dividends and earnings from tabular data
+#plot company dividends and earnings from web-scraped tabular data
 
 import pandas as pd
 import matplotlib.pyplot as plt
