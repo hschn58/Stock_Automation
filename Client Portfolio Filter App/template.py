@@ -4,7 +4,19 @@ template = r"""
 <html>
   <head>
     <title>Client Portfolio Filter (Multi-Filter + Sorting)</title>
+
+    <!-- File creation info (near the top) -->
+    <div style="margin:8px 0 14px 0; padding:8px 10px; background:#f8f8f8; border:1px solid #ddd;">
+      <div><strong>{{ csv_one_name }}</strong> — Created: {{ csv_one_created }}</div>
+      <div><strong>{{ csv_two_name }}</strong> — Created: {{ csv_two_created }}</div>
+      <div>Date: Year-Month-Day</div>
+    </div>
+
     <style>
+    
+      .charts-panel { position: fixed; top: 64px; right: 12px; width: 560px; z-index: 10; }  /* 02 */
+      .charts-panel img { display: block; width: 100%; height: auto; margin-bottom: 16px; }  /* 03 */
+      
       .container { display: flex; }
       .left-panel { width: 60%; margin-right: 20px; }
       .right-panel { width: 40%; }
@@ -19,6 +31,12 @@ template = r"""
     </style>
   </head>
   <body>
+
+    <div class="charts-panel">
+      <img id="pie_img" alt="Asset breakdown">
+      <img id="pie_sector_img" alt="Sector breakdown">
+    </div>  
+
     <!-- MAIN FILTER FORM -->
     <form method="POST">
       <input type="hidden" name="action" value="filter">
@@ -228,47 +246,53 @@ template = r"""
             </thead>
             <tbody>
               {% for h in hits %}
-                {% set rowSpan = h.cashRows|length if h.cashRows else 1 %}
+                {# prefer the value computed in Python; fall back to length if needed #}
+                {% set rowSpan = h.short_rowspan if h.short_rowspan is defined else (h.cashRows|length if h.cashRows else 1) %}
                 {% for i in range(rowSpan) %}
                   <tr>
-                    {% if i == 0 %}
-                      <td class="clickable" rowspan="{{ rowSpan }}"
-                          onclick="postChart('{{ h.portfolio|escape }}', '{{ h.shortName|escape }}')">
+                    {# --- PORTFOLIO cell: only on the first row of the first short name for this portfolio --- #}
+                    {% if i == 0 and h.is_portfolio_first %}
+                      <td rowspan="{{ h.portfolio_rowspan }}">
                         {{ h.portfolio }}
                       </td>
+                    {% endif %}
+
+                    {# --- SHORT NAME + % cells: only once per short name block --- #}
+                    {% if i == 0 %}
                       <td class="clickable" rowspan="{{ rowSpan }}"
                           onclick="postChart('{{ h.portfolio|escape }}', '{{ h.shortName|escape }}')">
                         {{ h.shortName }}
                       </td>
-                      <!-- Show Class #1 %, Class #2 %, Sector % -->
-                      <td class="clickable" rowspan="{{ rowSpan }}"
-                          onclick="postChart('{{ h.portfolio|escape }}', '{{ h.shortName|escape }}')">
+
+                      <td rowspan="{{ rowSpan }}">
                         {{ h.percent1|round(2) }}%
                       </td>
+
                       {% if use_second_filter %}
-                        <td class="clickable" rowspan="{{ rowSpan }}"
-                            onclick="postChart('{{ h.portfolio|escape }}', '{{ h.shortName|escape }}')">
+                        <td rowspan="{{ rowSpan }}">
                           {{ h.percent2|round(2) }}%
                         </td>
                       {% endif %}
 
                       {% if sector %}
-                        <td class="clickable" rowspan="{{ rowSpan }}"
-                            onclick="postChart('{{ h.portfolio|escape }}', '{{ h.shortName|escape }}')">
+                        <td rowspan="{{ rowSpan }}">
                           {{ h.sectorPercent|round(2) }}%
                         </td>
                       {% endif %}
                     {% endif %}
+
+                    {# --- ACCOUNT / CASH (per cash row) --- #}
                     {% if h.cashRows and i < (h.cashRows|length) %}
                       <td>{{ h.cashRows[i].accountNumber }}</td>
                       <td>{{ "${:,.2f}".format(h.cashRows[i].marketValue) }}</td>
                     {% else %}
                       <td></td><td></td>
                     {% endif %}
+
+                    {# --- Portfolio Value (per short name block) --- #}
                     {% if i == 0 %}
-                      <td class="clickable" rowspan="{{ rowSpan }}"
-                          onclick="postChart('{{ h.portfolio|escape }}', '{{ h.shortName|escape }}')">
-                        {{"${:,.2f}".format(h.portfolioValue|default('N/A')) }}
+                      <td rowspan="{{ rowSpan }}">
+                        {{ "${:,.2f}".format(h.portfolioValue|default('N/A')) }}
                       </td>
                     {% endif %}
                   </tr>
@@ -297,62 +321,15 @@ template = r"""
 
     <!-- JS to post for chart clicks, carrying all filter data + last_sort -->
     <script>
-      function postChart(portfolio, shortName) {
-        // We gather same data plus 'last_sort'
-        var lastSort = document.getElementById('saved_last_sort').value;
-
-        var form = document.createElement('form');
-        form.method = 'POST'; 
-        form.style.display = 'none';
-
-        // action
-        var a = document.createElement('input');
-        a.type = 'hidden';
-        a.name = 'action';
-        a.value = 'view_chart';
-        form.appendChild(a);
-
-        // chart_portfolio / chart_shortname
-        var p = document.createElement('input');
-        p.type = 'hidden';
-        p.name = 'chart_portfolio';
-        p.value = portfolio;
-        form.appendChild(p);
-
-        var s = document.createElement('input');
-        s.type = 'hidden';
-        s.name = 'chart_shortname';
-        s.value = shortName;
-        form.appendChild(s);
-
-        // leftover filter fields
-        form.appendChild(hiddenField('classFilter1', '{{ selected_class1 }}'));
-        form.appendChild(hiddenField('operator1', '{{ operator1 }}'));
-        form.appendChild(hiddenField('targetPercent1', '{{ target_percent1 }}'));
-
-        form.appendChild(hiddenField('classFilter2', '{{ selected_class2 }}'));
-        form.appendChild(hiddenField('operator2', '{{ operator2 }}'));
-        form.appendChild(hiddenField('targetPercent2', '{{ target_percent2 }}'));
-        form.appendChild(hiddenField('use_second_filter', '{{ 'on' if use_second_filter else '' }}'));
-
-        // carry sector filter if set
-        form.appendChild(hiddenField('sectorFilter', '{{ selected_sector }}'));
-        form.appendChild(hiddenField('operator_sector', '{{ operator_sector }}'));
-        form.appendChild(hiddenField('targetPercentSector', '{{ target_percent_sector }}'));
-
-        form.appendChild(hiddenField('last_sort', lastSort));
-
-        document.body.appendChild(form);
-        form.submit();
-      }
-
-      function hiddenField(nm, val) {
-        var x = document.createElement('input');
-        x.type = 'hidden';
-        x.name = nm;
-        x.value = val;
-        return x;
-      }
+    function postChart(portfolio, shortName) {                                     // 01
+      const t = Date.now();                                                        // 02
+      const p = encodeURIComponent(portfolio);                                     // 03
+      const s = encodeURIComponent(shortName);                                     // 04
+      const pie = document.getElementById('pie_img');                              // 05
+      const sec = document.getElementById('pie_sector_img');                       // 06
+      if (pie) pie.src = `/chart/class?portfolio=${p}&short=${s}&t=${t}`;          // 07
+      if (sec) sec.src = `/chart/sector?portfolio=${p}&short=${s}&t=${t}`;         // 08
+    }
     </script>
 
     <script>
@@ -395,26 +372,48 @@ template = r"""
     </script>
 
     <script>
-    function toggleSectorFilter() {
+      function toggleSectorFilter() {
         const classFilter1 = document.getElementById('classFilter1').value;
         const classFilter2 = document.getElementById('classFilter2').value;
         const sectorFilterSection = document.getElementById('sectorFilterSection');
+        const COMMON_STOCK = "{{ COMMON_STOCK }}";
 
-        // Show the sector filter if either class is "COMMON STOCK"
-        if (classFilter1 === 'COMMON STOCK' || classFilter2 === 'COMMON STOCK') {
-        sectorFilterSection.style.display = 'block';
+        if (classFilter1 === COMMON_STOCK || classFilter2 === COMMON_STOCK) {
+          sectorFilterSection.style.display = 'block';
         } else {
-        sectorFilterSection.style.display = 'none';
+          sectorFilterSection.style.display = 'none';
         }
-    }
+      }
 
-    // Attach the function to both dropdowns
-    document.addEventListener('DOMContentLoaded', function () {
+      document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('classFilter1').addEventListener('change', toggleSectorFilter);
         document.getElementById('classFilter2').addEventListener('change', toggleSectorFilter);
-        toggleSectorFilter(); // Initial check on page load
-    });
+        toggleSectorFilter();
+      });
     </script>
+
+    <script>                                                                                 <!-- 01 -->
+    document.addEventListener('DOMContentLoaded', function () {                              // 02
+      const sels = document.querySelectorAll(                                                // 03
+        'input[name="targetPercent1"], ' +                                                   // 04
+        'input[name="targetPercent2"], ' +                                                   // 05
+        'input[name="targetPercentSector"]'                                                  // 06
+      );                                                                                     // 07
+      sels.forEach(function(el) {                                                            // 08
+        el.setAttribute('inputmode', 'decimal');                                             // 09
+        el.setAttribute('pattern', '\\d*\\.?\\d*');                                          // 10
+        el.setAttribute('min', '0');                                                         // 11
+        el.addEventListener('input', function (e) {                                          // 12
+          let v = e.target.value || '';                                                      // 13
+          v = v.replace(/[^0-9.]/g, '');            // keep digits and dot                  // 14
+          const parts = v.split('.');                                                        // 15
+          // If you want digits-only (no decimals), replace line 14 with: v = v.replace(/\D/g,''); // 16
+          if (parts.length > 2) { v = parts[0] + '.' + parts.slice(1).join(''); }            // 17
+          e.target.value = v;                                                                // 18
+        });                                                                                  // 19
+      });                                                                                    // 20
+    });                                                                                      // 21
+    </script>                                                                                <!-- 22 -->
 
   </body>
 </html>
