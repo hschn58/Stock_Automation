@@ -67,12 +67,9 @@ source .venv/bin/activate           # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-
 ## Run
 
-python stock_drops_app.py
-
-Where `stock_drops_app.py` is whatever you name the script.
+python Stock_Drops.py
 
 ---
 
@@ -129,26 +126,18 @@ tksheet==6.2.10 ; python_version >= "3.9"   # optional but enables per-cell colo
 
 ## License
 
-MIT (or your preferred license).
+MIT .
 
 ---
 
-## Changelog (you can update as you iterate)
+## Changelog 
 
 - **v0.1.0** — Initial release: 3/4/5-day tabs, `tksheet` support, Excel export, Yahoo direct + `yfinance` fallback.
 
 ---
 
-## Roadmap ideas
+## Disclaimer
 
-- User-settable thresholds and colors (GUI controls).  
-- Multi-interval support (weekly/monthly percent changes).  
-- CSV export and copy-to-clipboard.  
-- Column sorting and quick filters.  
-
----
-
-### Credits
-
-Built with `tkinter`, `tksheet`, `pandas`, `requests`, `openpyxl`, and `yfinance` (fallback).
+This software is provided for informational and educational purposes only.  
+It does not constitute financial advice or a recommendation to trade securities.
 
