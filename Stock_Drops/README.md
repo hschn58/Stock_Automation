@@ -65,3 +65,90 @@ source .venv/bin/activate           # Windows: .venv\Scripts\activate
 
 # Install deps
 pip install -r requirements.txt
+```
+
+
+## Run
+
+python stock_drops_app.py
+
+Where `stock_drops_app.py` is whatever you name the script.
+
+---
+
+## Requirements
+
+pandas
+requests
+yfinance
+openpyxl
+tksheet==6.2.10 ; python_version >= "3.9"   # optional but enables per-cell colors
+
+> Notes  
+> • `tksheet` is optional; without it, the app still runs using `Treeview`.  
+> • You don’t install `tkinter` via `pip`. On Linux, install your OS package (`sudo apt-get install python3-tk`, etc.).  
+
+---
+
+## Usage tips
+
+- **Add** vs **Replace**  
+  - *Add* merges new tickers with the current list (ignoring duplicates).  
+  - *Replace* overwrites the list with exactly what you typed.
+- **Refresh**  
+  - Refetches prices and recomputes tables in a background thread.
+- **Export Excel**  
+  - Creates a single sheet with labeled sections for each horizon and the latest-day view.
+- **Customization** (edit the constants near the top of the file):
+  - `DEFAULT_TICKERS` — your starter list.
+  - `PCT_DROP_THRESHOLD_SOFT/STRONG` and `PCT_RISE_THRESHOLD_SOFT/STRONG`.
+  - `HORIZONS` — e.g., add `(2, "Two Days")` if you want a 2-day tab.
+- **Data source behavior**  
+  - Primary: direct Yahoo chart API (v8).  
+  - Fallback: `yfinance`.  
+  - A shared `requests.Session` with browsery headers reduces rate-limit quirks.
+
+---
+
+## Troubleshooting
+
+- **Blank tables**: network hiccup or all-NaN lookback (very recent IPO, halted, or ticker typo). Check the status bar and console messages.  
+- **No per-cell coloring**: install `tksheet` (see requirements).  
+- **Linux: missing tkinter**: install `python3-tk` (Ubuntu/Debian) or the equivalent for your distro.  
+- **Corporate networks / proxies**: outbound calls to `query1.finance.yahoo.com` must be allowed.
+
+---
+
+## Privacy & limits
+
+- No credentials or API keys are required.  
+- Requests go directly to Yahoo Finance endpoints.  
+- This tool is for **research/educational** use; data may be delayed or adjusted.
+
+---
+
+## License
+
+MIT (or your preferred license).
+
+---
+
+## Changelog (you can update as you iterate)
+
+- **v0.1.0** — Initial release: 3/4/5-day tabs, `tksheet` support, Excel export, Yahoo direct + `yfinance` fallback.
+
+---
+
+## Roadmap ideas
+
+- User-settable thresholds and colors (GUI controls).  
+- Multi-interval support (weekly/monthly percent changes).  
+- CSV export and copy-to-clipboard.  
+- Column sorting and quick filters.  
+
+---
+
+### Credits
+
+Built with `tkinter`, `tksheet`, `pandas`, `requests`, `openpyxl`, and `yfinance` (fallback).
+
