@@ -22,10 +22,10 @@ The app fetches prices from Yahoo Finance, computes smoothed percent-change seri
   - ≤ ~2 years → 1-hour data  
   - Longer → daily data
 - **Smoothing & signal highlighting**:
-  - Gaussian smoothing on both baseline and tickers.
+  - Smoothing on both baseline and tickers.
   - Centered moving average (≈10% of series length).
   - Red/blue overlays emphasize stronger positive/negative deviations.
-- **Readable axis**: date-only x-labels (time-of-day removed).
+- **Readable axis**: date-only x-labels.
 - **No API keys** required.
 
 ---
@@ -49,10 +49,8 @@ pip install yfinance pandas numpy scipy matplotlib requests
 From this folder:
 
 ```bash
-python stock_anomaly_heatmap.py
+python3 Stock_Comparison.py
 ```
-
-Replace `stock_anomaly_heatmap.py` with your actual script name if different.
 
 ---
 
@@ -125,15 +123,16 @@ Replace `stock_anomaly_heatmap.py` with your actual script name if different.
 
 ```
 Stock_Comparison/
-├── stock_anomaly_heatmap.py      # main GUI script
+├── Stock_Comparison.py      # main GUI script
 ├── Stock_Comparison_Output.png   # screenshot for README
+├── README.md
 ```
 
 ---
 
 ## License
 
-MIT (or your chosen license).
+MIT License.
 
 ---
 
