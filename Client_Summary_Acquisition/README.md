@@ -21,7 +21,7 @@ It was designed for internal use with this company’s account data format.
 ## Input Requirements
 The Excel file should contain (at minimum) the following columns:
 
-- `groupld` – Group identifier (e.g. `000019`).  
+- `groupld` – Group identifier (e.g. `10`).  
 - `Status` – Must include `"Active"`.  
 - Yearly balances, e.g.:
   - `2022ClosingBal`, `2023ClosingBal`, ...  
@@ -45,4 +45,5 @@ must be set at the top of the script.
    file_name = r"YOUR_FILE.xlsx"
    save_loc = r"PATH_TO_SAVE"
    ```
+
 
