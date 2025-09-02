@@ -2,7 +2,7 @@
 
 This script generates a **comprehensive performance overview** for client account groups over the full investment timeline.  
 It is part of the **Stock_Automation** project and is built for this company’s data structure.  
-⚠️ **Note:** This tool is not a general-purpose financial app — it assumes specific column names and input formats.
+**Note:** This tool is not a general-purpose financial app — it assumes specific column names and input formats.
 
 ---
 
@@ -45,3 +45,4 @@ Paths at the top of the script must be set:
 file_path = r"PATH_TO_FOLDER"
 data_file = r"YOUR_FILE.xlsx"
 save_loc  = r"PATH_TO_SAVE"
+
