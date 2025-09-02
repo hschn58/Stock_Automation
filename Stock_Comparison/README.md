@@ -42,3 +42,116 @@ Install required packages manually:
 
 ```bash
 pip install yfinance pandas numpy scipy matplotlib requests
+
+
+## Run
+
+From this folder:
+
+\begin{verbatim}
+python stock_anomaly_heatmap.py
+\end{verbatim}
+
+Replace \texttt{stock_anomaly_heatmap.py} with your actual script name if different.
+
+---
+
+## How to Use
+
+\begin{itemize}
+  \item \textbf{Choose Time Period} \\
+        Enter a number (e.g., 10) and select units (days, months, years).
+
+  \item \textbf{Add Tickers} \\
+        Type a ticker symbol (e.g., NVDA, AMD, AVGO) and click \textbf{Add}. \\
+        Use \textbf{Remove Selected} or the Delete key to remove.
+
+  \item \textbf{Select Baseline} 
+        \begin{itemize}
+          \item Default (basket mean) – average of all tickers.
+          \item Specific stock – baseline is one ticker you select.
+        \end{itemize}
+
+  \item \textbf{Generate} \\
+        Click \textbf{Generate Heatmap} to fetch data and view results.
+\end{itemize}
+
+---
+
+## Methodology
+
+\begin{itemize}
+  \item \textbf{Data fetch}: Adjusted close (or close) from Yahoo Finance.
+  \item \textbf{Percent change}: Each ticker converted to \texttt{pct\_change()}.
+  \item \textbf{Baseline}: Basket mean or user-selected stock.
+  \item \textbf{Smoothing}:
+    \begin{itemize}
+      \item Gaussian filter ($\sigma=1$) for baseline and tickers.
+      \item Centered moving average ($\approx 10\%$ of series length).
+    \end{itemize}
+  \item \textbf{Deviation calculation}: \\
+        $Deviation = Smoothed(\Delta ticker) - Smoothed(\Delta baseline)$
+  \item \textbf{Color scale}:
+    \begin{itemize}
+      \item Diverging seismic colormap centered at 0.
+      \item Limits set from 2nd--98th percentile of all deviations.
+    \end{itemize}
+  \item \textbf{Highlight overlay}: \\
+        Regions above thresholds emphasized 
+        (adaptive: 0.5\% intraday, 1\% hourly, 3\% daily).
+\end{itemize}
+
+---
+
+## Interpretation
+
+- 🔴 \textbf{Red} = outperformance vs. baseline  
+- 🔵 \textbf{Blue} = underperformance vs. baseline  
+
+---
+
+## Tips \& Notes
+
+- \textbf{Yahoo intraday limits}:  
+  \begin{itemize}
+    \item $\leq 7$ days $\rightarrow$ 1-minute bars
+    \item $\leq 60$ days $\rightarrow$ 5-minute bars
+    \item $\leq 730$ days $\rightarrow$ 1-hour bars
+    \item Longer $\rightarrow$ daily bars
+  \end{itemize}
+
+- Date-only labels: X-axis strips time-of-day for clarity.  
+- Retries: Built-in retry with exponential backoff.  
+- Session headers: Uses a persistent HTTP session for stability.  
+
+---
+
+## Troubleshooting
+
+- \textbf{Invalid Ticker}: Only A--Z, 0--9, ., and - are allowed.  
+- \textbf{Empty chart}: Try a longer window or different tickers.  
+- \textbf{Tkinter errors}: Install the system’s Tk package if missing.  
+
+---
+
+## Folder Structure
+
+\begin{verbatim}
+Stock_Comparison/
+├── stock_anomaly_heatmap.py      # main GUI script
+├── Stock_Comparison_Output.png   # screenshot for README
+\end{verbatim}
+
+---
+
+## License
+
+MIT (or your chosen license).
+
+---
+
+## Disclaimer
+
+This software is provided for informational and educational purposes only.  
+It does not constitute financial advice or a recommendation to trade securities.
+
