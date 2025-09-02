@@ -2,7 +2,7 @@
 
 This project generates a **performance summary table** for customer groups over the last several years.  
 It was designed for internal use with this company’s account data format.  
-⚠️ **Note:** This is not intended as a general-purpose financial tool — it relies on specific column names and structure in the source data.
+**Note:** This is not intended as a general-purpose financial tool — it relies on specific column names and structure in the source data.
 
 ---
 
@@ -44,3 +44,5 @@ must be set at the top of the script.
    data_path = r"PATH_TO_DATA"
    file_name = r"YOUR_FILE.xlsx"
    save_loc = r"PATH_TO_SAVE"
+   ```
+
