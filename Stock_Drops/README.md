@@ -3,6 +3,8 @@
 A lightweight desktop app that flags notable short-term moves in your watchlist.  
 It pulls daily prices from Yahoo Finance, computes 3-, 4-, and 5-day percent changes, and highlights big drops/rises in a compact heat-table. Export to Excel in one click.
 
+![App screenshot](./Stock_Drops_Output.png)
+
 > Works best with `tksheet` (per-cell coloring). If `tksheet` isn’t installed, it falls back to a standard `Treeview` with row-level coloring.
 
 ---
@@ -31,14 +33,6 @@ It pulls daily prices from Yahoo Finance, computes 3-, 4-, and 5-day percent cha
 - **Snappy UI**
   - Background thread for fetch/compute; status bar updates.
   - Notebook layout; resizable; remembers column widths within the session.
-
----
-
-## Screenshot
-
-If you add the image to the repo root as `Stock_Drops_Output.png`, this will render on GitHub:
-
-![App screenshot](./Stock_Drops_Output.png)
 
 ---
 
@@ -140,4 +134,5 @@ MIT .
 
 This software is provided for informational and educational purposes only.  
 It does not constitute financial advice or a recommendation to trade securities.
+
 
