@@ -48,5 +48,14 @@ Paths at the top of the script must be set:
 file_path = r"PATH_TO_FOLDER"
 data_file = r"YOUR_FILE.xlsx"
 save_loc  = r"PATH_TO_SAVE"
+```
+
+---
+
+## License
+
+
+
+
 
 
