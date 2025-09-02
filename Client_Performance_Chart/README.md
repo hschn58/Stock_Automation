@@ -52,6 +52,16 @@ save_loc  = r"PATH_TO_SAVE"
 
 ---
 
+## How to Run
+1. Update paths in `Last_Few_Years.py`:
+   ```python
+   data_path = r"PATH_TO_DATA"
+   file_name = r"YOUR_FILE.xlsx"
+   save_loc = r"PATH_TO_SAVE"
+   ```
+
+---
+
 ## License
 
 This project is licensed under the [MIT License](../LICENSE).
@@ -62,6 +72,7 @@ This project is licensed under the [MIT License](../LICENSE).
 
 This software is provided for informational and educational purposes only.  
 It does not constitute financial advice or a recommendation to trade securities.
+
 
 
 
