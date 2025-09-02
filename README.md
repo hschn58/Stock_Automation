@@ -42,16 +42,16 @@ pip install -U pip
 
 ---
 
+## License
 
-## Disclaimer
-
-This repository is not any attempt to solicit financial advice
-
+This project is licensed under the [MIT License](../LICENSE).
 
 ---
 
-## License 
+## Disclaimer
+This repository is not an attempt to solicit financial advice.
 
-MIT License
+This software is provided for informational and educational purposes only.  
+It does not constitute financial advice or a recommendation to trade securities.
 
 
