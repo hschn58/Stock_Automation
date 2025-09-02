@@ -1,6 +1,4 @@
-# Correlation and Anomaly Heatmap Generator App
-# Requirements: pip install tkinter yfinance pandas numpy scipy matplotlib requests
-# To package: pyinstaller --onefile --windowed app.py
+
 
 import tkinter as tk
 from tkinter import messagebox, ttk
@@ -340,9 +338,10 @@ class StockApp:
                                 gridspec_kw={'hspace': 0})
         axs = np.atleast_1d(axs)
 
-        time_labels = baseline_smoothed.index.strftime(
-            '%Y-%m-%d %H:%M' if interval in ('1m','2m','5m','15m','30m','60m','90m','1h') else '%Y-%m-%d'
-        )
+        # --- date-only labels (no time-of-day) ---
+        date_index = baseline_smoothed.index.normalize()          # strip time-of-day
+        time_labels = date_index.strftime('%Y-%m-%d')
+
 
         for i, t in enumerate(self.stocks):
             dev_trend = deviations_ma[t].to_numpy()
