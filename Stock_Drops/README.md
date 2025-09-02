@@ -120,7 +120,7 @@ tksheet==6.2.10 ; python_version >= "3.9"   # optional but enables per-cell colo
 
 ## License
 
-MIT .
+This project is licensed under the [MIT License](./LICENSE).
 
 ---
 
@@ -134,5 +134,6 @@ MIT .
 
 This software is provided for informational and educational purposes only.  
 It does not constitute financial advice or a recommendation to trade securities.
+
 
 
