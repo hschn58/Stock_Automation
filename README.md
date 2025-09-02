@@ -48,3 +48,10 @@ pip install -U pip
 This repository is not any attempt to solicit financial advice
 
 
+---
+
+## License 
+
+MIT License
+
+
