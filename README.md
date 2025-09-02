@@ -5,7 +5,7 @@ Designed for quick research workflows and client-facing outputs.
 
 ---
 
-## 📂 Repository Structure
+## Repository Structure
 
 - **Stock_Drops/**  
   Tkinter GUI for anomaly detection. Fetches intraday % moves, builds a heatmap of deviations vs. peers, highlights cells ≥ ±3%, and flags strong conditions.
@@ -30,7 +30,7 @@ Designed for quick research workflows and client-facing outputs.
 
 ---
 
-## 🚀 Quickstart
+## Quickstart
 
 ### 1. Environment
 
@@ -38,3 +38,4 @@ Designed for quick research workflows and client-facing outputs.
 python3 -m venv .venv
 source .venv/bin/activate      # On Windows: .venv\Scripts\activate
 pip install -U pip
+```
