@@ -8,7 +8,7 @@ It was designed for internal use with this company’s account data format.
 
 ## What It Does
 - Reads customer account data from an Excel file.  
-- Prompts for one or more **group IDs** (e.g. `19` for `000019`).  
+- Prompts for one or more **group IDs** (e.g. `10`).  
 - Filters for **active accounts** in those groups.  
 - Calculates:
   - **Account Value** for each year.  
@@ -45,5 +45,6 @@ must be set at the top of the script.
    file_name = r"YOUR_FILE.xlsx"
    save_loc = r"PATH_TO_SAVE"
    ```
+
 
 
