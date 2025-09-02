@@ -39,3 +39,19 @@ python3 -m venv .venv
 source .venv/bin/activate      # On Windows: .venv\Scripts\activate
 pip install -U pip
 ```
+
+---
+
+
+## Disclaimer
+
+This repository is not any attempt to solicit financial advice
+
+
+---
+
+## License 
+
+MIT License
+
+
