@@ -51,7 +51,18 @@ must be set at the top of the script.
    save_loc = r"PATH_TO_SAVE"
    ```
 
+---
 
+## License
+
+This project is licensed under the [MIT License](../LICENSE).
+
+---
+
+## Disclaimer
+
+This software is provided for informational and educational purposes only.  
+It does not constitute financial advice or a recommendation to trade securities.
 
 
 
