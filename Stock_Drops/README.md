@@ -62,9 +62,9 @@ pip install -r requirements.txt
 ```
 
 ## Run
-
+```
 python Stock_Drops.py
-
+```
 ---
 
 ## Requirements
@@ -135,6 +135,7 @@ This project is licensed under the [MIT License](../LICENSE).
 
 This software is provided for informational and educational purposes only.  
 It does not constitute financial advice or a recommendation to trade securities.
+
 
 
 
