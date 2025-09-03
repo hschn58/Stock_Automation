@@ -2,7 +2,7 @@
 
 This project generates a **performance summary table** for customer groups over the last several years.  
 It was designed for internal use with this company’s account data format.  
-**Note:** This is not intended as a general-purpose financial tool — it relies on specific column names and structure in the source data for an individual company
+**Note:** This is not intended as a general-purpose financial tool — it relies on specific column names and structure from company-specifc source data
 
 ![Screenshot](./Summary_Acquisition_Output.png)
 
@@ -63,6 +63,7 @@ This project is licensed under the [MIT License](../LICENSE).
 
 This software is provided for informational and educational purposes only.  
 It does not constitute financial advice or a recommendation to trade securities.
+
 
 
 
