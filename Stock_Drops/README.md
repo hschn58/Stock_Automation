@@ -107,6 +107,7 @@ tksheet==6.2.10 ; python_version >= "3.9"   # optional but enables per-cell colo
 - **No per-cell coloring**: install `tksheet` (see requirements).  
 - **Linux: missing tkinter**: install `python3-tk` (Ubuntu/Debian) or the equivalent for your distro.  
 - **Corporate networks / proxies**: outbound calls to `query1.finance.yahoo.com` must be allowed.
+- **Missing same-day data**: queries made near around market closing hours can cause unexpected behavior for same-day data. Try again later. 
 
 ---
 
@@ -134,6 +135,7 @@ This project is licensed under the [MIT License](../LICENSE).
 
 This software is provided for informational and educational purposes only.  
 It does not constitute financial advice or a recommendation to trade securities.
+
 
 
 
