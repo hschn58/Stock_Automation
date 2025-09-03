@@ -1,3 +1,4 @@
+# .github/workflows/ci.yml
 name: ci
 on: [push, pull_request]
 
@@ -8,7 +9,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"   # was a matrix; keep it simple for now
+          python-version: "3.12"
 
       - name: Upgrade pip
         run: python -m pip install -U pip
@@ -16,13 +17,22 @@ jobs:
       - name: Install dev tools
         run: python -m pip install ruff==0.5.7 black==24.8.0
 
-      - name: Ruff (lint) — non-blocking for now
+      # (optional) install root requirements if you have them
+      - name: Install requirements
+        if: ${{ hashFiles('requirements.txt') != '' }}
+        run: python -m pip install -r requirements.txt
+
+      - name: Ruff (lint)
         run: ruff check .
         continue-on-error: true
 
-      - name: Black (format check) — non-blocking for now
+      - name: Black (format check)
         run: black --check .
         continue-on-error: true
+
+      # ⬇️ Add this new report-only guardrail here
+      - name: Ruff (possible runtime issues, report-only)
+        run: ruff check . --select F || true
 
       - name: Syntax smoke (no GUI)
         run: python -m compileall -q .

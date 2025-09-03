@@ -1,4 +1,3 @@
-
 template = r"""
 <!doctype html>
 <html>

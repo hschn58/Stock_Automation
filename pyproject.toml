@@ -1,0 +1,10 @@
+# pyproject.toml (repo root)
+[tool.black]
+line-length = 100
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+# Start ultra-conservative: only pycodestyle (E/W) — whitespace/style
+select = ["E","W"]
+ignore = ["E501"]  # let Black handle long lines

@@ -7,27 +7,66 @@ import threading
 import pandas as pd
 import re
 from io import BytesIO
-import openpyxl  # keep writer backend available #tksheet 
+import openpyxl  # keep writer backend available #tksheet
 import yfinance as yf
 
 # Try to use tksheet for per-cell coloring; fallback to Treeview
 try:
     import tksheet
+
     HAS_TKSHEET = True
 except Exception:
     HAS_TKSHEET = False
 
 DEFAULT_TICKERS = [
-    'HD','HON','LMT','WSM','CLX','COST','GIS','MKC','PEP','BLK','ICE','JPM','PYPL','USB','ABT',
-    'AMGN','BMY','MRK','TMO','UNH','JNJ','WM','AAPL','AMZN','META','GOOG','MSFT','ADBE','ANET',
-    'CSCO','EBAY','ORCL','TXN','CNI','UNP','UPS','NEE','DUK','AMT','DLR','O'
+    "HD",
+    "HON",
+    "LMT",
+    "WSM",
+    "CLX",
+    "COST",
+    "GIS",
+    "MKC",
+    "PEP",
+    "BLK",
+    "ICE",
+    "JPM",
+    "PYPL",
+    "USB",
+    "ABT",
+    "AMGN",
+    "BMY",
+    "MRK",
+    "TMO",
+    "UNH",
+    "JNJ",
+    "WM",
+    "AAPL",
+    "AMZN",
+    "META",
+    "GOOG",
+    "MSFT",
+    "ADBE",
+    "ANET",
+    "CSCO",
+    "EBAY",
+    "ORCL",
+    "TXN",
+    "CNI",
+    "UNP",
+    "UPS",
+    "NEE",
+    "DUK",
+    "AMT",
+    "DLR",
+    "O",
 ]
 
 PCT_DROP_THRESHOLD_SOFT = -3.0
 PCT_DROP_THRESHOLD_STRONG = -6.0
 
-PCT_RISE_THRESHOLD_SOFT   =  3.0
-PCT_RISE_THRESHOLD_STRONG =  6.0
+PCT_RISE_THRESHOLD_SOFT = 3.0
+PCT_RISE_THRESHOLD_STRONG = 6.0
 
 HORIZONS = [(5, "Five Days"), (4, "Four Days"), (3, "Three Days")]
 
@@ -35,13 +74,18 @@ import requests
 
 # one shared session helps with Yahoo quirks
 _SESSION = requests.Session()
-_SESSION.headers.update({
-    "User-Agent": "Mozilla/5.0",
-    "Accept": "application/json,text/plain,*/*",
-})
+_SESSION.headers.update(
+    {
+        "User-Agent": "Mozilla/5.0",
+        "Accept": "application/json,text/plain,*/*",
+    }
+)
+
 
 # 101 --- Direct Yahoo "chart" fetch (bypasses yfinance) ------------------------
-def _fetch_chart_direct(symbol, period="15d", interval="1d", start=None, end=None, session=None, timeout=12):
+def _fetch_chart_direct(
+    symbol, period="15d", interval="1d", start=None, end=None, session=None, timeout=12
+):
     """
     Return a tidy OHLCV DataFrame using Yahoo Finance v8 chart API.
     Prefers range=period when provided; otherwise uses period1/period2.
@@ -62,10 +106,15 @@ def _fetch_chart_direct(symbol, period="15d", interval="1d", start=None, end=Non
         # e.g. "15d", "1mo" etc.
         params["range"] = str(period)
     else:
+
         def _to_epoch(x):
-            if x is None: return None
-            if isinstance(x, (int, float)): return int(x)
-            ts = _pd.to_datetime(x); return int(ts.timestamp())
+            if x is None:
+                return None
+            if isinstance(x, (int, float)):
+                return int(x)
+            ts = _pd.to_datetime(x)
+            return int(ts.timestamp())
+
         params["period1"] = _to_epoch(start) if start is not None else 0
         params["period2"] = _to_epoch(end) if end is not None else int(_time.time())
 
@@ -94,14 +143,17 @@ def _fetch_chart_direct(symbol, period="15d", interval="1d", start=None, end=Non
     q = (ind.get("quote") or [{}])[0]
     adj = (ind.get("adjclose") or [{}])[0].get("adjclose")
 
-    df = _pd.DataFrame({
-        "Open":   q.get("open"),
-        "High":   q.get("high"),
-        "Low":    q.get("low"),
-        "Close":  q.get("close"),
-        "Adj Close": adj if adj is not None else q.get("close"),
-        "Volume": q.get("volume"),
-    }, index=_pd.to_datetime(ts, unit="s", utc=True))
+    df = _pd.DataFrame(
+        {
+            "Open": q.get("open"),
+            "High": q.get("high"),
+            "Low": q.get("low"),
+            "Close": q.get("close"),
+            "Adj Close": adj if adj is not None else q.get("close"),
+            "Volume": q.get("volume"),
+        },
+        index=_pd.to_datetime(ts, unit="s", utc=True),
+    )
 
     # Convert to market timezone if provided, then strip tz (keep app’s naive index convention)
     tz = (res.get("meta") or {}).get("timezone")
@@ -138,7 +190,8 @@ def _safe_history(ticker, period="15d", interval="1d"):
             df = t.history(period="1mo", interval="1d", auto_adjust=False, actions=False)
         if df is not None and not df.empty:
             if isinstance(df.index, pd.DatetimeIndex) and df.index.tz is not None:
-                df = df.copy(); df.index = df.index.tz_localize(None)
+                df = df.copy()
+                df.index = df.index.tz_localize(None)
             return df
     except Exception as e:
         print(f"[fetch-yf] {ticker}: {e}")
@@ -200,8 +253,8 @@ def fetch_stock_data(tickers):
         return out
 
     # 4) prep for UI (show all pct changes, highlight via colorize_cells)
-    Five_Days  = _prep_show_all(Percent_Change1)
-    Four_Days  = _prep_show_all(Percent_Change2)
+    Five_Days = _prep_show_all(Percent_Change1)
+    Four_Days = _prep_show_all(Percent_Change2)
     Three_Days = _prep_show_all(Percent_Change3)
     return Five_Days, Four_Days, Three_Days
 
@@ -221,7 +274,6 @@ def format_dataframe(df):
         except Exception:
             pass
     return df_copy
-
 
 
 def df_latest_row(df: pd.DataFrame) -> pd.DataFrame:
@@ -251,7 +303,9 @@ def df_latest_row(df: pd.DataFrame) -> pd.DataFrame:
     # Reindex to 0.. for cleaner display in tksheet/Treeview
     return out.reset_index(drop=True)
 
+
 # -------------------- Table abstraction --------------------
+
 
 class Table:
     """Abstraction over tksheet (preferred) or ttk.Treeview (fallback)."""
@@ -262,10 +316,18 @@ class Table:
 
         if HAS_TKSHEET:
             self.widget = tksheet.Sheet(self.container)
-            self.widget.enable_bindings((
-                "single_select", "row_select", "column_width_resize", "arrowkeys",
-                "rc_select", "rc_insert_row", "rc_delete_row", "copy"
-            ))
+            self.widget.enable_bindings(
+                (
+                    "single_select",
+                    "row_select",
+                    "column_width_resize",
+                    "arrowkeys",
+                    "rc_select",
+                    "rc_insert_row",
+                    "rc_delete_row",
+                    "copy",
+                )
+            )
             self.widget.grid(row=0, column=0, sticky="nsew")
             self.container.columnconfigure(0, weight=1)
             self.container.rowconfigure(0, weight=1)
@@ -362,9 +424,9 @@ class Table:
                 elif f <= PCT_DROP_THRESHOLD_SOFT:
                     bg = "#eaffea"
                 elif f >= PCT_RISE_THRESHOLD_STRONG:
-                    bg = "#fbff17"   # strong green
+                    bg = "#fbff17"  # strong green
                 elif f >= PCT_RISE_THRESHOLD_SOFT:
-                    bg = "#fcffcd"   # soft yellow
+                    bg = "#fcffcd"  # soft yellow
                 else:
                     continue
 
@@ -386,6 +448,7 @@ class Table:
 
 # -------------------- Main App --------------------
 
+
 class StockDropsApp(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -404,22 +467,31 @@ class StockDropsApp(tk.Tk):
         self.entry.pack(side=tk.LEFT, padx=8)
         self.entry.insert(0, ",".join(self.tickers))
 
-        self.btn_add     = ttk.Button(top, text="Add",          command=self.on_add)
-        self.btn_replace = ttk.Button(top, text="Replace",      command=self.on_replace)
-        self.btn_refresh = ttk.Button(top, text="Refresh",      command=self.on_refresh)
-        self.btn_export  = ttk.Button(top, text="Export Excel", command=self.on_export)
+        self.btn_add = ttk.Button(top, text="Add", command=self.on_add)
+        self.btn_replace = ttk.Button(top, text="Replace", command=self.on_replace)
+        self.btn_refresh = ttk.Button(top, text="Refresh", command=self.on_refresh)
+        self.btn_export = ttk.Button(top, text="Export Excel", command=self.on_export)
         for b in (self.btn_add, self.btn_replace, self.btn_refresh, self.btn_export):
             b.pack(side=tk.LEFT, padx=4)
 
-        self.status = ttk.Label(self, text=("Ready. "
-                          + ("(tksheet enabled: per-cell colors)"
-                             if HAS_TKSHEET else "(fallback: row-level colors)")), anchor="w")
+        self.status = ttk.Label(
+            self,
+            text=(
+                "Ready. "
+                + (
+                    "(tksheet enabled: per-cell colors)"
+                    if HAS_TKSHEET
+                    else "(fallback: row-level colors)"
+                )
+            ),
+            anchor="w",
+        )
         self.status.pack(side=tk.BOTTOM, fill=tk.X)
 
         self.nb = ttk.Notebook(self)
         self.nb.pack(expand=True, fill=tk.BOTH, padx=8, pady=8)
 
-        self.tables = {}   # {horizon: {"full": Table, "last": Table}}
+        self.tables = {}  # {horizon: {"full": Table, "last": Table}}
         for n, label in HORIZONS:
             frame = ttk.Frame(self.nb)
             self.nb.add(frame, text=label)
@@ -427,7 +499,9 @@ class StockDropsApp(tk.Tk):
             paned = ttk.PanedWindow(frame, orient=tk.VERTICAL)
             paned.pack(expand=True, fill=tk.BOTH)
 
-            full_frame = ttk.LabelFrame(paned, text=f"{label} – All rows (≤ {abs(PCT_DROP_THRESHOLD_SOFT)}%)")
+            full_frame = ttk.LabelFrame(
+                paned, text=f"{label} – All rows (≤ {abs(PCT_DROP_THRESHOLD_SOFT)}%)"
+            )
             table_full = Table(full_frame)
             paned.add(full_frame, weight=3)
 
@@ -466,18 +540,24 @@ class StockDropsApp(tk.Tk):
     def on_add(self):
         new = self._parse_tickers(self.entry.get())
         if not new:
-            messagebox.showwarning("No valid tickers", "Enter comma-separated tickers like AAPL,MSFT")
+            messagebox.showwarning(
+                "No valid tickers", "Enter comma-separated tickers like AAPL,MSFT"
+            )
             return
         before = set(self.tickers)
         for t in new:
             if t not in before:
                 self.tickers.append(t)
-        self.status.configure(text=f"Added {len(set(new)-before)} new tickers. Total: {len(self.tickers)}")
+        self.status.configure(
+            text=f"Added {len(set(new)-before)} new tickers. Total: {len(self.tickers)}"
+        )
 
     def on_replace(self):
         new = self._parse_tickers(self.entry.get())
         if not new:
-            messagebox.showwarning("No valid tickers", "Enter comma-separated tickers like AAPL,MSFT")
+            messagebox.showwarning(
+                "No valid tickers", "Enter comma-separated tickers like AAPL,MSFT"
+            )
             return
         self.tickers = new
         self.status.configure(text=f"Replaced ticker list. Total: {len(self.tickers)}")
@@ -505,9 +585,7 @@ class StockDropsApp(tk.Tk):
             messagebox.showinfo("Nothing to export", "Fetch data first.")
             return
         path = filedialog.asksaveasfilename(
-            title="Save Excel",
-            defaultextension=".xlsx",
-            filetypes=[("Excel Workbook", "*.xlsx")]
+            title="Save Excel", defaultextension=".xlsx", filetypes=[("Excel Workbook", "*.xlsx")]
         )
         if not path:
             return
@@ -516,19 +594,20 @@ class StockDropsApp(tk.Tk):
                 row = 1
                 for n, label in HORIZONS:
                     full, last = self.data.get(n, (pd.DataFrame(), pd.DataFrame()))
-                    pd.DataFrame(columns=[f"{label} Drops (≤{abs(PCT_DROP_THRESHOLD_SOFT)}%)"]).to_excel(
-                        writer, sheet_name="Sheet1", index=False, startrow=row
-                    )
-                    full.to_excel(writer, sheet_name="Sheet1", index=False, startrow=row+1)
+                    pd.DataFrame(
+                        columns=[f"{label} Drops (≤{abs(PCT_DROP_THRESHOLD_SOFT)}%)"]
+                    ).to_excel(writer, sheet_name="Sheet1", index=False, startrow=row)
+                    full.to_excel(writer, sheet_name="Sheet1", index=False, startrow=row + 1)
                     row += max(2, len(full) + 4)
                     pd.DataFrame(columns=[f"{label} Latest"]).to_excel(
                         writer, sheet_name="Sheet1", index=False, startrow=row
                     )
-                    last.to_excel(writer, sheet_name="Sheet1", index=False, startrow=row+1)
+                    last.to_excel(writer, sheet_name="Sheet1", index=False, startrow=row + 1)
                     row += max(2, len(last) + 4)
             self.status.configure(text=f"Saved: {path}")
         except Exception as e:
             messagebox.showerror("Export failed", str(e))
+
 
 if __name__ == "__main__":
     app = StockDropsApp()
