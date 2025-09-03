@@ -2,7 +2,7 @@
 
 This script generates a **comprehensive performance overview** for client account groups over the full investment timeline.  
 It is part of the **Stock_Automation** project and is built for this company’s data structure.  
-**Note:** This tool is not a general-purpose financial app — it assumes specific column names and input formats.
+**Note:** This is not intended as a general-purpose financial tool — it relies on specific column names and structure from company-specifc source data
 
 ![Screenshot](./Performance_Chart_Output.png)
 
@@ -72,6 +72,7 @@ This project is licensed under the [MIT License](../LICENSE).
 
 This software is provided for informational and educational purposes only.  
 It does not constitute financial advice or a recommendation to trade securities.
+
 
 
 
