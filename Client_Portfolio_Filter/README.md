@@ -3,6 +3,11 @@
 An interactive filtering and visualization tool for client portfolio holdings.  
 This application loads client data from CSVs, applies configurable filters on asset allocation, and displays results in a browser-style desktop app with interactive charts.
 
+![Screenshot](<./Example Application Query Output.png>)
+
+> Above is an example of the application query output.
+
+> **Note**: Numerical values have been redacted due to data sensitivity.
 ---
 
 ## Features
@@ -37,12 +42,9 @@ Two CSV files must be placed in the same directory as the executable/script:
    - Segment (sector, for stocks)  
    - Market Value  
 
-   Example row:
+   Example:
 
-   | Portfolio Name | Account Number | Ticker | Asset Name | Market Value | Class            | Segment       |
-   |----------------|----------------|--------|------------|--------------|-----------------|---------------|
-   | 12345          | ACC001         | AAPL   | Apple Inc. | 15,000       | COMMON STOCK    | TECHNOLOGY    |
-   | 12345          | ACC001         | CASH   | Cash       | 5,000        | CASH EQUIVALENTS | CASH          |
+   ![Screenshot](<./Client Data Format Example.png>)
 
 2. **`ShortName_Map.csv`** – mapping of account numbers to short names.  
    - Columns: `Account Number`, `Short Name`.
@@ -55,3 +57,13 @@ Two CSV files must be placed in the same directory as the executable/script:
 ```bash
 pip install -r requirements.txt
 python app.py
+```
+
+
+
+
+
+
+
+
+
