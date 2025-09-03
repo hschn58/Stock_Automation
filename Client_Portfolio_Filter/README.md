@@ -57,6 +57,7 @@ Two CSV files must be placed in the same directory as the executable/script:
 ```bash
 pip install -r requirements.txt
 python app.py
+```
 
 
 
