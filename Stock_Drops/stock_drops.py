@@ -8,6 +8,7 @@ import pandas as pd
 import re
 from io import BytesIO
 import openpyxl  # keep writer backend available #tksheet 
+import yfinance as yf
 
 # Try to use tksheet for per-cell coloring; fallback to Treeview
 try:
