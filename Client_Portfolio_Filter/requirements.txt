@@ -1,0 +1,18 @@
+# Web + CORS
+Flask==3.0.3
+flask-cors==4.0.0
+
+# Data
+pandas==2.2.2
+numpy==1.26.4
+
+# Plotting
+matplotlib==3.8.4
+
+# Excel
+openpyxl==3.1.5
+defusedxml==0.7.1
+
+# Desktop wrapper (optional if running server-only)
+PyQt5==5.15.11
+PyQtWebEngine==5.15.7
