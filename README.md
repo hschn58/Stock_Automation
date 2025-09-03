@@ -1,3 +1,5 @@
+![CI](https://img.shields.io/github/actions/workflow/status/hschn58/Stock_Automation/ci.yml?branch=main)
+![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
 # Stock Automation
 
 A collection of Python tools and lightweight apps for automating financial data tasks: fetching fundamentals, screening anomalies, comparing tickers, and generating charts.  
