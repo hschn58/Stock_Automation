@@ -2,7 +2,7 @@
 
 An interactive filtering and visualization tool for client portfolio holdings.  
 This application loads client data from CSVs, applies configurable filters on asset allocation, and displays results in a browser-style desktop app with interactive charts.
-**Note:** This is not intended as a general-purpose financial tool — it relies on specific column names and structure in the source data for an individual company
+**Note:** This is not intended as a general-purpose financial tool — it relies on specific column names and structure from company-specifc source data
 
 ![Screenshot](<./Example Application Query Output.png>)
 
@@ -59,6 +59,7 @@ Two CSV files must be placed in the same directory as the executable/script:
 pip install -r requirements.txt
 python app.py
 ```
+
 
 
 
