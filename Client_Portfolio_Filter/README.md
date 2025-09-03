@@ -5,6 +5,7 @@ This application loads client data from CSVs, applies configurable filters on as
 
 ![Screenshot](<./Example Application Query Output.png>)
 
+> Above is an example of the application query output. 
 > **Note**: Numerical values have been redacted due to data sensitivity.
 ---
 
@@ -55,6 +56,7 @@ Two CSV files must be placed in the same directory as the executable/script:
 ```bash
 pip install -r requirements.txt
 python app.py
+
 
 
 
