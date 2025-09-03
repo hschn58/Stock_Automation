@@ -3,6 +3,7 @@
 An interactive filtering and visualization tool for client portfolio holdings.  
 This application loads client data from CSVs, applies configurable filters on asset allocation, and displays results in a browser-style desktop app with interactive charts.
 
+![Screenshot](./Example Application Query Output.png)
 ---
 
 ## Features
@@ -55,3 +56,4 @@ Two CSV files must be placed in the same directory as the executable/script:
 ```bash
 pip install -r requirements.txt
 python app.py
+
