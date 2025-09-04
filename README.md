@@ -10,7 +10,7 @@ Designed for quick research workflows and client-facing outputs.
 ## Repository Structure
 
 - **Stock_Drops/**  
-  Tkinter GUI for anomaly detection. Fetches intraday % moves, builds a heatmap of deviations vs. peers, highlights cells ≥ ±3%, and flags strong conditions.
+  Tkinter GUI for anomaly detection. Fetches intraday % moves, highlights cells ≥ ±3%, and flags strong conditions.
 
 - **Company_Financials/**  
   Scripts analyze dividends and earnings from various publicly-traded companies from existing data.
