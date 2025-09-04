@@ -22,7 +22,7 @@ Designed for quick research workflows and client-facing outputs.
   Generates performance charts suitable for client presentation.
 
 - **Client_Portfolio_Filter/**  
-  Filters portfolio by detailed holdings information.
+  Filters client portfolios by detailed holdings information.
 
 - **Client_Summary_Acquisition/**  
   Quickly assembles account value and related metrics from raw custodial exports.
