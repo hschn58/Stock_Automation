@@ -25,7 +25,7 @@ Designed for quick research workflows and client-facing outputs.
   Cleans and filters portfolio exports (exclude cash, collapse classes, fix tickers).
 
 - **Client_Summary_Acquisition/**  
-  Quickly assembles account or holdings summaries from raw custodial exports.
+  Quickly assembles account value and related metrics from raw custodial exports.
 
 - **Methods/**  
   Shared helper functions (date/time, I/O, plotting, error handling).
