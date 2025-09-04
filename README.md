@@ -13,7 +13,7 @@ Designed for quick research workflows and client-facing outputs.
   Tkinter GUI for anomaly detection. Fetches intraday % moves, builds a heatmap of deviations vs. peers, highlights cells ≥ ±3%, and flags strong conditions.
 
 - **Company_Financials/**  
-  Scripts to pull dividends, earnings dates, payout ratios, and simple statement snapshots.
+  Scripts analyze dividends and earnings from various publicly-traded companies from existing data.
 
 - **Stock_Comparison/**  
   Utilities for pairwise and basket analysis (correlations, rolling returns, beta-like metrics).
