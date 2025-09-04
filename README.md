@@ -16,7 +16,7 @@ Designed for quick research workflows and client-facing outputs.
   Scripts analyze dividends and earnings from various publicly-traded companies from existing data.
 
 - **Stock_Comparison/**  
-  Utilities for pairwise and basket analysis (correlations, rolling returns, beta-like metrics).
+  Utilities for pairwise and basket analysis to examine relative over-or-under performance.
 
 - **Client_Performance_Chart/**  
   Generates performance charts suitable for client presentation.
